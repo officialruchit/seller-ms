@@ -19,7 +19,7 @@ const BundleProductSchema = new Schema({
   sellerId: { type: String, required: true },
   name: { type: String, required: true },
   description: { type: String },
-  products: [{ type: String, ref: 'Product' }],
+  products: [{ type: Schema.Types.ObjectId, ref: 'Product' }],
   discount: { type: Number, default: 0 },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now }
@@ -29,7 +29,7 @@ const BundleProductSchema = new Schema({
 const SalesReportSchema = new Schema({
   reportId: { type: String, required: true, unique: true },
   sellerId: { type: String, required: true },
-  productId: { type: String, required: true, ref: 'Product' },
+  productId: {  type: Schema.Types.ObjectId, required: true, ref: 'Product' },
   date: { type: Date, required: true },
   quantitySold: { type: Number, required: true },
   totalRevenue: { type: Number, required: true }
@@ -41,7 +41,9 @@ const ProductAnalyticsSchema = new Schema({
   productId: { type: String, required: true, ref: 'Product' },
   views: { type: Number, default: 0 },
   purchases: { type: Number, default: 0 },
-  returns: { type: Number, default: 0 }
+  returns: { type: Number, default: 0 },
+  createdAt: { type: Date, default: Date.now },
+  updatedAt: { type: Date, default: Date.now },
 });
 
 
