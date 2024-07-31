@@ -15,8 +15,6 @@ export const incrementViews = async (req: Request, res: Response) => {
             },
             { new: true, upsert: true }
         );
-        
-
         res.status(200).json({ message: "Views incremented", analytics });
     } catch (err) {
         const error = err as Error;
