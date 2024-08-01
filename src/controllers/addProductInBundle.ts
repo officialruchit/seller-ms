@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
-import { BundleProduct } from "../model/seller";
+import { BundleProduct,IBundleProduct} from "../model/seller";
 import mongoose from "mongoose";
 
-// Remove a product from a bundle
-export const addProductFromBundle = async (req: Request, res: Response) => {
+// Add a product to a bundle
+export const addProductToBundle = async (req: Request, res: Response) => {
   try {
     const { bundleId, productId } = req.params;
 
@@ -12,19 +12,25 @@ export const addProductFromBundle = async (req: Request, res: Response) => {
       return res.status(400).json({ message: "Invalid product ID" });
     }
 
-    // Update the bundle to remove the specified product
-    const updatedBundle = await BundleProduct.findByIdAndUpdate(
-        bundleId ,
-        { $push: { products: productId } },
-        { new: true }
-     
-    ).populate("products");
-
-    if (!updatedBundle) {
+    // Find the bundle to check if the product is already in the bundle
+    const bundle = await BundleProduct.findById(bundleId) as IBundleProduct;
+    if (!bundle) {
       return res.status(404).json({ message: "Bundle not found" });
     }
 
-    res.status(200).json({ message: "Product removed from bundle", bundle: updatedBundle });
+    // Check if the product is already in the bundle
+    if (bundle.products.includes(new mongoose.Types.ObjectId(productId))) {
+      return res.status(400).json({ message: "Product is already in the bundle" });
+    }
+
+    // Add the product to the bundle
+    bundle.products.push(new mongoose.Types.ObjectId(productId));
+    await bundle.save();
+
+    // Populate the updated bundle with product details
+    const updatedBundle = await BundleProduct.findById(bundleId).populate("products");
+
+    res.status(200).json({ message: "Product added to bundle", bundle: updatedBundle });
   } catch (err) {
     const error = err as Error;
     res.status(400).json({ message: error.message });

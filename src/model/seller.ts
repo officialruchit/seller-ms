@@ -13,8 +13,20 @@ const ProductSchema = new Schema({
   updatedAt: { type: Date, default: Date.now }
 });
 
+// BundleProduct Interface
+interface IBundleProduct extends Document {
+  bundleId: string;
+  sellerId: string;
+  name: string;
+  description?: string;
+  products: mongoose.Types.ObjectId[];
+  discount?: number;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
 // Bundle Product Schema
-const BundleProductSchema = new Schema({
+const BundleProductSchema = new Schema<IBundleProduct>({
   bundleId: { type: String, required: true, unique: true },
   sellerId: { type: String, required: true },
   name: { type: String, required: true },
@@ -51,4 +63,4 @@ const Product = mongoose.model<Document>('Product', ProductSchema,'Product');
 const BundleProduct = mongoose.model<Document>('BundleProduct', BundleProductSchema,'BundleProduct');
 const SalesReport = mongoose.model<Document>('SalesReport', SalesReportSchema,'SalesReport');
 const ProductAnalytics = mongoose.model<Document>('ProductAnalytics', ProductAnalyticsSchema,'ProductAnalytics');
-export { Product, BundleProduct, SalesReport, ProductAnalytics };
+export { Product, BundleProduct,IBundleProduct, SalesReport, ProductAnalytics };
