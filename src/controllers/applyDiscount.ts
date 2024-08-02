@@ -1,5 +1,5 @@
-import { Request, Response } from "express";
-import { Product } from "../model/seller";
+import { Request, Response } from 'express';
+import { Product } from '../model/seller';
 
 export const applyDiscount = async (req: Request, res: Response) => {
   try {
@@ -7,7 +7,9 @@ export const applyDiscount = async (req: Request, res: Response) => {
     const { discount } = req.body; // Discount percentage or fixed amount
 
     if (discount < 0 || discount > 100) {
-      return res.status(400).json({ message: "Discount must be between 0 and 100." });
+      return res
+        .status(400)
+        .json({ message: 'Discount must be between 0 and 100.' });
     }
 
     const product = await Product.findByIdAndUpdate(
@@ -17,7 +19,7 @@ export const applyDiscount = async (req: Request, res: Response) => {
     );
 
     if (!product) {
-      return res.status(404).json({ message: "Product not found." });
+      return res.status(404).json({ message: 'Product not found.' });
     }
 
     res.status(200).json({ product });

@@ -10,7 +10,7 @@ const ProductSchema = new Schema({
   quantity: { type: Number, required: true },
   discount: { type: Number, default: 0 },
   createdAt: { type: Date, default: Date.now },
-  updatedAt: { type: Date, default: Date.now }
+  updatedAt: { type: Date, default: Date.now },
 });
 
 // BundleProduct Interface
@@ -34,17 +34,17 @@ const BundleProductSchema = new Schema<IBundleProduct>({
   products: [{ type: Schema.Types.ObjectId, ref: 'Product' }],
   discount: { type: Number, default: 0 },
   createdAt: { type: Date, default: Date.now },
-  updatedAt: { type: Date, default: Date.now }
+  updatedAt: { type: Date, default: Date.now },
 });
 
 // Sales Report Schema
 const SalesReportSchema = new Schema({
   reportId: { type: String, required: true, unique: true },
   sellerId: { type: String, required: true },
-  productId: {  type: Schema.Types.ObjectId, required: true, ref: 'Product' },
+  productId: { type: Schema.Types.ObjectId, required: true, ref: 'Product' },
   date: { type: Date, required: true },
   quantitySold: { type: Number, required: true },
-  totalRevenue: { type: Number, required: true }
+  totalRevenue: { type: Number, required: true },
 });
 
 // Product Analytics Schema
@@ -58,9 +58,26 @@ const ProductAnalyticsSchema = new Schema({
   updatedAt: { type: Date, default: Date.now },
 });
 
-
-const Product = mongoose.model<Document>('Product', ProductSchema,'Product');
-const BundleProduct = mongoose.model<Document>('BundleProduct', BundleProductSchema,'BundleProduct');
-const SalesReport = mongoose.model<Document>('SalesReport', SalesReportSchema,'SalesReport');
-const ProductAnalytics = mongoose.model<Document>('ProductAnalytics', ProductAnalyticsSchema,'ProductAnalytics');
-export { Product, BundleProduct,IBundleProduct, SalesReport, ProductAnalytics };
+const Product = mongoose.model<Document>('Product', ProductSchema, 'Product');
+const BundleProduct = mongoose.model<Document>(
+  'BundleProduct',
+  BundleProductSchema,
+  'BundleProduct'
+);
+const SalesReport = mongoose.model<Document>(
+  'SalesReport',
+  SalesReportSchema,
+  'SalesReport'
+);
+const ProductAnalytics = mongoose.model<Document>(
+  'ProductAnalytics',
+  ProductAnalyticsSchema,
+  'ProductAnalytics'
+);
+export {
+  Product,
+  BundleProduct,
+  IBundleProduct,
+  SalesReport,
+  ProductAnalytics,
+};

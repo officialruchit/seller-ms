@@ -1,4 +1,4 @@
-import { Product } from "../model/seller";
+import { Product } from '../model/seller';
 
 class ProductService {
   public async getProductById(productId: string) {

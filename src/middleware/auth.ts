@@ -22,10 +22,10 @@ const auth = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const decode = Jwt.verify(
       token as string,
-      process.env.JWT_SECRET as string,
+      process.env.JWT_SECRET as string
     ) as JwtPayload;
-    req.userId = decode.userId
-    req.roles = decode.roles
+    req.userId = decode.userId;
+    req.roles = decode.roles;
     if (!req.roles.includes('seller')) {
       return res.status(403).json({ error: 'Forbidden: Access is denied' });
     }

@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { BundleProduct, Product } from '../model/seller'; // Adjust the path as necessary
+import { BundleProduct } from '../model/seller'; // Adjust the path as necessary
 import mongoose from 'mongoose';
 
 // Create a new bundle product
@@ -9,7 +9,9 @@ export const createBundleProduct = async (req: Request, res: Response) => {
     const { bundleId, name, description, products, discount } = req.body;
 
     // Convert product IDs from strings to ObjectIds
-    const productObjectIds = products.map((productId: string) => new mongoose.Types.ObjectId(productId));
+    const productObjectIds = products.map(
+      (productId: string) => new mongoose.Types.ObjectId(productId)
+    );
 
     const bundleProduct = new BundleProduct({
       bundleId,
@@ -17,7 +19,7 @@ export const createBundleProduct = async (req: Request, res: Response) => {
       name,
       description,
       products: productObjectIds,
-      discount
+      discount,
     });
 
     await bundleProduct.save();
