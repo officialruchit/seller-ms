@@ -9,6 +9,7 @@ const ProductSchema = new Schema({
   price: { type: Number, required: true },
   quantity: { type: Number, required: true },
   discount: { type: Number, default: 0 },
+  category: { type: String, ref: 'ProductCategory' },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
 });
@@ -21,6 +22,7 @@ interface IBundleProduct extends Document {
   description?: string;
   products: mongoose.Types.ObjectId[];
   discount?: number;
+  blocked: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -33,6 +35,7 @@ const BundleProductSchema = new Schema<IBundleProduct>({
   description: { type: String },
   products: [{ type: Schema.Types.ObjectId, ref: 'Product' }],
   discount: { type: Number, default: 0 },
+  blocked: { type: Boolean, default: false },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
 });
@@ -42,7 +45,7 @@ const SalesReportSchema = new Schema({
   reportId: { type: String, required: true, unique: true },
   sellerId: { type: String, required: true },
   productId: { type: Schema.Types.ObjectId, required: true, ref: 'Product' },
-  date: { type: Date, required: true },
+  date: { type: Date, required: true, default: Date.now },
   quantitySold: { type: Number, required: true },
   totalRevenue: { type: Number, required: true },
 });

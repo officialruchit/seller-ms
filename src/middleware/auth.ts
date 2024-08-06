@@ -31,7 +31,8 @@ const auth = async (req: Request, res: Response, next: NextFunction) => {
     }
     next();
   } catch (error) {
-    res.status(401).json({ error: 'Invalid token' });
+    const err = error as Error;
+    res.status(401).json({ Messsage: err.message });
   }
 };
 
