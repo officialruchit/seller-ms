@@ -13,7 +13,7 @@ export const getById = async (req: Request, res: Response) => {
     const { id } = req.params;
 
     // Find the product by its ID
-    const product = await Product.findById(id);
+    const product = await Product.findById(id).populate('category');
 
     // If no product is found, respond with status 404 (Not Found) and an error message
     if (!product) {

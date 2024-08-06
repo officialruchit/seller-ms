@@ -12,7 +12,10 @@ export const getAllProduct = async (req: Request, res: Response) => {
     const query = search ? { name: new RegExp(search, 'i') } : {};
 
     // Fetch the products based on the search term and pagination
-    const products = await Product.find(query).skip(skip).limit(limit);
+    const products = await Product.find(query)
+      .populate('category')
+      .skip(skip)
+      .limit(limit);
 
     // Get the total number of products matching the search term
     const totalProducts = await Product.countDocuments(query);

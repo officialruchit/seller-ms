@@ -1,5 +1,8 @@
 import { Request, Response } from 'express';
-import ProductService from '../service/addProduct';
+import mongoose from 'mongoose';
+import ProductCategory from '../model/ProductCategory';
+import { Product } from '../model/seller';
+
 /**
  * Controller function to handle the addition of a new product.
  *
@@ -11,14 +14,39 @@ export const addProduct = async (req: Request, res: Response) => {
     // Extract the sellerId from the request object (assuming it's set by middleware)
     const sellerId = req.userId;
 
-    // Combine the request body data with the sellerId to create the new product data
-    const productData = { ...req.body, sellerId };
+    const {
+      productId,
+      name,
+      description,
+      price,
+      quantity,
+      discount,
+      category,
+    } = req.body;
 
-    // Call the ProductService to create a new product in the database
-    const product = await ProductService.createProduct(productData);
+    // Check if the category ID is valid
+    if (!mongoose.Types.ObjectId.isValid(category)) {
+      return res.status(400).json({ message: 'Invalid category ID' });
+    }
 
-    // Respond with status 201 (Created) and return the newly created product
-    res.status(201).json(product);
+    const Productcategory = await ProductCategory.findById(category);
+    if (!Productcategory) {
+      res.status(404).json({ message: 'category not found' });
+    }
+
+    const NewProduct = new Product({
+      productId,
+      sellerId,
+      name,
+      description,
+      price,
+      quantity,
+      discount,
+      category,
+    });
+
+    const saveData = await NewProduct.save();
+    res.status(201).json(saveData);
   } catch (err) {
     // If an error occurs, catch it and send a response with status 400 (Bad Request)
     // and include the error message
