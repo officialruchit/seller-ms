@@ -27,6 +27,7 @@ import { applyDiscount } from '../controllers/applyDsicountToProduct';
 import { getAllDiscounts } from '../controllers/getAllDsicount';
 import { updateDiscount } from '../controllers/updateDiscount';
 import { deleteDiscount } from '../controllers/deleteDiscount';
+import{getAllProductCategories} from '../controllers/getAllCategory'
 
 routes.get('/getAllDiscounts', auth, getAllDiscounts);
 routes.get('/getAllProductAnalytics', getAllProductAnalytics);
@@ -34,6 +35,7 @@ routes.get('/getAllSalesReport', auth, getAllSalesReport);
 routes.get('/getbundle', getAllBundle);
 routes.get('/', auth, getAllProduct);
 routes.get('/:id', auth, getById);
+routes.get('/getAllCategory',auth,getAllProductCategories)
 routes.get('/product/analytics/:id', auth, getProductAnalytics);
 routes.post('/createDiscount', auth, createDiscount);
 routes.post('/addProduct', auth, addProduct);
@@ -46,7 +48,6 @@ routes.put('/updateProductDiscount', auth, updateProductDiscount);
 //routes.patch('/products/:id/discount', applyDiscount);
 routes.put('/updateDiscount/:discountId', auth, updateDiscount);
 routes.patch('/bundle/:bundleId/product/:productId', auth, addProductToBundle);
-
 routes.put('/product/:productId/views', auth, incrementViews);
 routes.patch('/product/:productId/return', auth, incrementReturns);
 routes.patch('/product/:productId/purchase', auth, increamentPurchase);

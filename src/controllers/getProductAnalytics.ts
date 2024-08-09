@@ -13,7 +13,7 @@ export const getProductAnalytics = async (req: Request, res: Response) => {
     const { id } = req.params;
 
     // Find the product analytics by its ID
-    const analytics = await ProductAnalytics.findById(id);
+    const analytics = await ProductAnalytics.findById(id).populate('productId');
 
     // If no analytics is found, respond with status 404 (Not Found) and an error message
     if (!analytics) {

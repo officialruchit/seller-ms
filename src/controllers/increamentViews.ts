@@ -22,7 +22,7 @@ export const incrementViews = async (req: Request, res: Response) => {
         $setOnInsert: { analyticsId: uuidv4() }, // Set unique analyticsId only when a new document is created
       },
       { new: true, upsert: true } // Options: return the updated document, create if not exists
-    );
+    ).populate('productId');
 
     // Respond with status 200 (OK) and return a success message along with the updated analytics data
     res.status(200).json({ message: 'Views incremented', analytics });

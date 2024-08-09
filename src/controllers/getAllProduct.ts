@@ -13,7 +13,7 @@ export const getAllProduct = async (req: Request, res: Response) => {
 
     // Fetch the products based on the search term and pagination
     const products = await Product.find(query)
-      .populate('category')
+      .populate('category').populate('discount')
       .skip(skip)
       .limit(limit);
 

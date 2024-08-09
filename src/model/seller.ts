@@ -65,13 +65,26 @@ const SalesReportSchema = new Schema({
   totalRevenue: { type: Number, required: true },
 });
 
+interface IAnalyst extends Document{
+  analyticsId:string,
+  productId: mongoose.Types.ObjectId,
+  views: number,
+  purchases: number,
+  returns:number,
+  totalRevenue: number,
+  createdAt: Date,
+  updatedAt: Date,
+}
+
+
 // Product Analytics Schema
-const ProductAnalyticsSchema = new Schema({
+const ProductAnalyticsSchema: Schema<IAnalyst>  = new Schema({
   analyticsId: { type: String, required: true, unique: true },
-  productId: { type: String, required: true, ref: 'Product' },
+  productId: {type: mongoose.Schema.Types.ObjectId, required: true, ref: 'Product' },
   views: { type: Number, default: 0 },
   purchases: { type: Number, default: 0 },
   returns: { type: Number, default: 0 },
+  totalRevenue: { type: Number, default: 0 },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
 });
@@ -93,9 +106,11 @@ const ProductAnalytics = mongoose.model<Document>(
   'ProductAnalytics'
 );
 export {
+  IProduct,
   Product,
   BundleProduct,
   IBundleProduct,
   SalesReport,
+  IAnalyst,
   ProductAnalytics,
 };

@@ -12,7 +12,7 @@ export const getAllSalesReport = async (req: Request, res: Response) => {
     const query = search ? { reportId: new RegExp(search, 'i') } : {};
 
     // Fetch the sales reports based on the search term and pagination
-    const reports = await SalesReport.find(query).skip(skip).limit(limit);
+    const reports = await SalesReport.find(query).skip(skip).limit(limit).populate('productId');
 
     // Get the total number of sales reports matching the search term
     const totalReports = await SalesReport.countDocuments(query);
