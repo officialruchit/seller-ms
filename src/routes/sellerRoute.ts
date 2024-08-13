@@ -1,64 +1,16 @@
 import { Router } from 'express';
 const routes = Router();
-import auth from '../middleware/auth';
-import { addProduct } from '../controllers/addProduct';
-import { deleteProduct } from '../controllers/deleteProduct';
-import { getAllProduct } from '../controllers/getAllProduct';
-import { getById } from '../controllers/getProductById';
-import { updateProduct } from '../controllers/updateProduct';
-import { createSalesReport } from '../controllers/createSales';
-import { createBundleProduct } from '../controllers/createBundle';
-import { getAllBundle } from '../controllers/getbundle';
-import { removeProductFromBundle } from '../controllers/deleteProductFromBundle';
-import { addProductToBundle } from '../controllers/addProductInBundle';
-import { updateProductDiscount } from '../controllers/updateDiscountForProduct';
-import { incrementViews } from '../controllers/increamentViews';
-import { increamentPurchase } from '../controllers/increamentPurchase';
-import { incrementReturns } from '../controllers/increamentReturn';
-import { getProductAnalytics } from '../controllers/getProductAnalytics';
-import { deleteSalesReport } from '../controllers/deleteSalesReport';
-import { getAllSalesReport } from '../controllers/getAllSalesReport';
-import { updateSalesReport } from '../controllers/updateSalesReport';
-//import { applyDiscount } from '../controllers/applyDiscount';
-import { deleteBundleProduct } from '../controllers/deleteBundle';
-import { getAllProductAnalytics } from '../controllers/getAllProductAnalyst';
-import { createDiscount } from '../controllers/createDiscount';
-import { applyDiscount } from '../controllers/applyDsicountToProduct';
-import { getAllDiscounts } from '../controllers/getAllDsicount';
-import { updateDiscount } from '../controllers/updateDiscount';
-import { deleteDiscount } from '../controllers/deleteDiscount';
-import{getAllProductCategories} from '../controllers/getAllCategory'
-
-routes.get('/getAllDiscounts', auth, getAllDiscounts);
-routes.get('/getAllProductAnalytics', getAllProductAnalytics);
-routes.get('/getAllSalesReport', auth, getAllSalesReport);
-routes.get('/getbundle', getAllBundle);
-routes.get('/', auth, getAllProduct);
-routes.get('/:id', auth, getById);
-routes.get('/getAllCategory',auth,getAllProductCategories)
-routes.get('/product/analytics/:id', auth, getProductAnalytics);
-routes.post('/createDiscount', auth, createDiscount);
-routes.post('/addProduct', auth, addProduct);
-routes.post('/createSalesReport', auth, createSalesReport);
-routes.post('/bundle-products', auth, createBundleProduct);
-routes.put('/applyDiscount/:productId/:discountId', auth, applyDiscount);
-routes.put('/updateSalesReport/:id', auth, updateSalesReport);
-routes.put('/updateProduct/:id', auth, updateProduct);
-routes.put('/updateProductDiscount', auth, updateProductDiscount);
-//routes.patch('/products/:id/discount', applyDiscount);
-routes.put('/updateDiscount/:discountId', auth, updateDiscount);
-routes.patch('/bundle/:bundleId/product/:productId', auth, addProductToBundle);
-routes.put('/product/:productId/views', auth, incrementViews);
-routes.patch('/product/:productId/return', auth, incrementReturns);
-routes.patch('/product/:productId/purchase', auth, increamentPurchase);
-routes.delete('/deleteDiscount/:id', deleteDiscount);
-routes.delete('/bundle/:bundleId', deleteBundleProduct);
-routes.delete('/deleteSalesReport/:id', auth, deleteSalesReport);
-routes.delete('/deleteProduct/:id', auth, deleteProduct);
-routes.delete(
-  '/bundle/:bundleId/product/:productId',
-  auth,
-  removeProductFromBundle
-);
+import Analyticsroutes from '../controllers/analytics/routes/analyticsRoute';
+import Bunleroutes from '../controllers/bundle/routes/BundleRoutes';
+import Discountroutes from '../controllers/discount/routes/discountRoutes';
+import Productroutes from '../controllers/product/routes/productRoutes';
+import Reportroutes from '../controllers/salesReport/routes/ReportRoutes';
+import { getAllcategory } from '../controllers/getAllCategory';
+routes.get('/getAllcategory', getAllcategory);
+routes.use('/', Analyticsroutes);
+routes.use('/', Bunleroutes);
+routes.use('/', Discountroutes);
+routes.use('/', Productroutes);
+routes.use('/', Reportroutes);
 
 export default routes;

@@ -2,13 +2,13 @@ import mongoose, { Document, Schema } from 'mongoose';
 import { IDiscount } from './discount';
 
 interface IProduct extends Document {
-  productId: string;
   sellerId: string;
   name: string;
   description: string;
   price: number;
   quantity: number;
   discount: IDiscount['_id'];
+  discountedPrice: number;
   blocked: boolean;
   category: mongoose.Types.ObjectId;
   createdAt: Date;
@@ -17,13 +17,13 @@ interface IProduct extends Document {
 
 // Product Schema
 const ProductSchema: Schema<IProduct> = new Schema({
-  productId: { type: String, required: true, unique: true },
   sellerId: { type: String, required: true },
   name: { type: String, required: true },
   description: { type: String },
   price: { type: Number, required: true },
   quantity: { type: Number, required: true },
   discount: { type: mongoose.Schema.Types.ObjectId, ref: 'Discount' },
+  discountedPrice: { type: Number },
   category: { type: mongoose.Schema.Types.ObjectId, ref: 'ProductCategory' },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
@@ -31,7 +31,6 @@ const ProductSchema: Schema<IProduct> = new Schema({
 
 // BundleProduct Interface
 interface IBundleProduct extends Document {
-  bundleId: string;
   sellerId: string;
   name: string;
   description?: string;
@@ -44,7 +43,6 @@ interface IBundleProduct extends Document {
 
 // Bundle Product Schema
 const BundleProductSchema = new Schema<IBundleProduct>({
-  bundleId: { type: String, required: true, unique: true },
   sellerId: { type: String, required: true },
   name: { type: String, required: true },
   description: { type: String },
@@ -65,22 +63,25 @@ const SalesReportSchema = new Schema({
   totalRevenue: { type: Number, required: true },
 });
 
-interface IAnalyst extends Document{
-  analyticsId:string,
-  productId: mongoose.Types.ObjectId,
-  views: number,
-  purchases: number,
-  returns:number,
-  totalRevenue: number,
-  createdAt: Date,
-  updatedAt: Date,
+interface IAnalyst extends Document {
+  analyticsId: string;
+  productId: mongoose.Types.ObjectId;
+  views: number;
+  purchases: number;
+  returns: number;
+  totalRevenue: number;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
-
 // Product Analytics Schema
-const ProductAnalyticsSchema: Schema<IAnalyst>  = new Schema({
+const ProductAnalyticsSchema: Schema<IAnalyst> = new Schema({
   analyticsId: { type: String, required: true, unique: true },
-  productId: {type: mongoose.Schema.Types.ObjectId, required: true, ref: 'Product' },
+  productId: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    ref: 'Product',
+  },
   views: { type: Number, default: 0 },
   purchases: { type: Number, default: 0 },
   returns: { type: Number, default: 0 },

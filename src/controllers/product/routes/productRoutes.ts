@@ -1,0 +1,15 @@
+import auth from '../../../middleware/auth';
+import { deleteProduct } from '../controller/deleteProduct';
+import { getById } from '../controller/getProductById';
+import { addProduct } from '../controller/addProduct';
+import { getAllProduct } from '../controller/getAllProduct';
+import { updateProduct } from '../controller/updateProduct';
+import { Router } from 'express';
+const routes = Router();
+routes.get('/', auth, getAllProduct);
+routes.get('/:id', auth, getById);
+routes.post('/addProduct', auth, addProduct);
+routes.put('/updateProduct/:id', auth, updateProduct);
+routes.delete('/deleteProduct/:id', auth, deleteProduct);
+//routes.patch('/products/:id/discount', applyDiscount);
+export default routes;

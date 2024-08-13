@@ -1,6 +1,5 @@
 import mongoose, { Document, Schema } from 'mongoose';
 export interface IDiscount extends Document {
-  discountId: string;
   sellerId: string;
   percentage: number;
   description?: string;
@@ -11,7 +10,6 @@ export interface IDiscount extends Document {
 }
 
 const DiscountSchema: Schema<IDiscount> = new Schema({
-  discountId: { type: String, required: true, unique: true },
   sellerId: { type: String, required: true },
   percentage: { type: Number, required: true },
   description: { type: String },

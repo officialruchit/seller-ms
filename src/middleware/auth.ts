@@ -5,14 +5,12 @@ interface JwtPayload {
   userId: string;
   roles: string[];
 }
-
 declare module 'express-serve-static-core' {
   interface Request {
     userId?: string;
     roles?: string[];
   }
 }
-
 const auth = async (req: Request, res: Response, next: NextFunction) => {
   const header = req.header('Authorization');
   const token = header && header.split(' ')[1];
