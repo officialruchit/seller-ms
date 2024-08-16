@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { BundleProduct, IBundleProduct } from '../../../model/seller';
 import mongoose from 'mongoose';
+import { Product } from '../../../model/product';
 
 // Add a product to a bundle
 export const addProductToBundle = async (req: Request, res: Response) => {
@@ -27,15 +28,18 @@ export const addProductToBundle = async (req: Request, res: Response) => {
 
     // Add the product to the bundle
     bundle.products.push(new mongoose.Types.ObjectId(productId));
+
+    const productsData = await Product.find({ _id: { $in: bundle.products } });
+  
+    const totalOriginalPrice = productsData.reduce((total, product) => total + product.price, 0);
+    bundle.totalPrice=totalOriginalPrice
+    bundle.discountPrice = bundle.discountPercentage
+      ? totalOriginalPrice * (1 - bundle.discountPercentage / 100)
+      : totalOriginalPrice;
+    // Save the updated bundle
     await bundle.save();
 
-    // Populate the updated bundle with product details
-    const updatedBundle =
-      await BundleProduct.findById(bundleId).populate('products');
-
-    res
-      .status(200)
-      .json({ message: 'Product added to bundle', bundle: updatedBundle });
+    res.status(200).json({ message: 'Product added to bundle', bundle });
   } catch (err) {
     const error = err as Error;
     res.status(400).json({ message: error.message });
