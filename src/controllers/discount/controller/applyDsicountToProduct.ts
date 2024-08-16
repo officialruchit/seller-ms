@@ -1,6 +1,6 @@
 import { discount, IDiscount } from '../../../model/discount';
 import { Request, Response } from 'express';
-import { Product, IProduct } from '../../../model/seller';
+import { Product, IProduct } from '../../../model/product';
 
 export const applyDiscount = async (req: Request, res: Response) => {
   try {
@@ -34,8 +34,14 @@ export const applyDiscount = async (req: Request, res: Response) => {
       { discount: discountId, discountedPrice: discountedPrice },
       { new: true }
     )
-      .populate('discount')
-      .populate('category');
+      .populate({
+        path: 'discount',
+        select: 'percentage description validFrom validTo -_id',
+      })
+      .populate({
+        path: 'category',
+        select: 'name description -_id',
+      });
 
     if (!updatedProduct) {
       return res.status(404).json({ message: 'Product not found' });

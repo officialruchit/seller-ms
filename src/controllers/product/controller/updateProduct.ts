@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { Product } from '../../../model/seller';
+import { Product } from '../../../model/product';
 
 /**
  * Controller function to update a product's details.
@@ -10,7 +10,7 @@ import { Product } from '../../../model/seller';
 export const updateProduct = async (req: Request, res: Response) => {
   try {
     // Extract the product ID from the request parameters
-    const { id } = req.params;
+    const id = req.params.id;
 
     // Extract the updated data from the request body
     const updateData = req.body;

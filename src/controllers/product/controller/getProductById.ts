@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { Product, IProduct } from '../../../model/seller';
+import { Product, IProduct } from '../../../model/product';
 
 /**
  * Controller function to get a product by its ID.
@@ -10,12 +10,18 @@ import { Product, IProduct } from '../../../model/seller';
 export const getById = async (req: Request, res: Response) => {
   try {
     // Extract the product ID from the request parameters
-    const { id } = req.params;
+    const id = req.params.id;
 
     // Find the product by its ID
     const product = (await Product.findById(id)
-      .populate('category')
-      .populate('discount')) as IProduct;
+      .populate({
+        path: 'category',
+        select: 'name description -_id',
+      })
+      .populate({
+        path: 'discount',
+        select: 'percentage description validFrom validTo -_id',
+      })) as IProduct;
 
     if (product.blocked) {
       res.status(401).json({ message: 'product is unavailable' });

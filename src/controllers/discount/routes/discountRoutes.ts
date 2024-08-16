@@ -10,7 +10,7 @@ import { updateProductDiscount } from '../controller/updateDiscountForProduct';
 import { Router } from 'express';
 const routes = Router();
 routes.get('/getAllDiscounts', auth, getAllDiscounts);
-routes.get('/getByIdDiscount', auth, getByIdDiscount);
+routes.get('/getByIdDiscount/:id', auth, getByIdDiscount);
 routes.post('/createDiscount', auth, createDiscount);
 routes.put('/applyDiscount/:productId/:discountId', auth, applyDiscount);
 routes.put(

@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { Product } from '../../../model/seller';
+import { Product } from '../../../model/product';
 
 export const getAllProduct = async (req: Request, res: Response) => {
   try {
@@ -13,8 +13,14 @@ export const getAllProduct = async (req: Request, res: Response) => {
 
     // Fetch the products based on the search term and pagination
     const products = await Product.find(query)
-      .populate('category')
-      .populate('discount')
+      .populate({
+        path: 'category',
+        select: 'name description -_id',
+      })
+      .populate({
+        path: 'discount',
+        select: 'percentage description validFrom validTo -_id',
+      })
       .skip(skip)
       .limit(limit);
 

@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { Product } from '../../../model/seller';
+import { Product } from '../../../model/product';
 
 /**
  * Controller function to delete a product.

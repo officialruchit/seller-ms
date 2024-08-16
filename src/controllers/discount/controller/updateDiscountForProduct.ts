@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
-import { Product } from '../../../model/seller';
-
+import { Product } from '../../../model/product';
 /**
  * Controller function to update the discount for a product.
  *

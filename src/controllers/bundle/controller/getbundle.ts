@@ -1,27 +1,38 @@
 import { Request, Response } from 'express';
 import { BundleProduct } from '../../../model/seller';
+
 export const getAllBundle = async (req: Request, res: Response) => {
   try {
-    const { page = 1, limit = 10, search = '' } = req.query;
+    // Extract and parse query parameters, with default values
+    const pageNumber = parseInt(req.query.page as string, 10) || 1;
+    const limitNumber = parseInt(req.query.limit as string, 10) || 10;
+    const searchString = (req.query.search as string) || '';
 
-    const pageNumber = parseInt(page as string, 10); // Parse page number as base-10 integer
-    const limitNumber = parseInt(limit as string, 10); // Parse limit as base-10 integer
-    const searchString = search as string;
+    // Validate page and limit numbers
+    if (pageNumber < 1 || limitNumber < 1) {
+      return res.status(400).json({ Message: 'Invalid page or limit number' });
+    }
 
-    // Create a search filter
+    // Create a search filter based on the search query
     const searchFilter = searchString
       ? { name: new RegExp(searchString, 'i') }
       : {};
+
     // Calculate total documents and total pages
     const totalDocuments = await BundleProduct.countDocuments(searchFilter);
     const totalPages = Math.ceil(totalDocuments / limitNumber);
 
+    // Fetch the bundle products based on the search filter and pagination
     const bundleProducts = await BundleProduct.find(searchFilter)
-      .populate('products')
+      .populate({
+        path: 'products',
+        select: 'name description price quantity',
+      })
       .skip((pageNumber - 1) * limitNumber)
       .limit(limitNumber)
       .exec();
 
+    // Return the paginated bundle products along with metadata
     res.status(200).json({
       totalDocuments,
       totalPages,
